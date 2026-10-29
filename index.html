@@ -57,7 +57,22 @@
         .top-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--gold); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; transition: all 0.3s; }
         .top-btn:hover { background: var(--gold); color: #111; }
 
-        .live-clock { color: var(--gold); font-size: 12px; font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        /* وضعیت آنلاین و ساعت */
+        .status-bar { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 15px; font-size: 12px; font-weight: 700; color: var(--gold); }
+        .status-dot { width: 8px; height: 8px; background: #25D366; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #25D366; animation: pulse-dot 1.5s infinite; }
+        @keyframes pulse-dot { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(37, 211, 102, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
+
+        /* دکمه پخش صدا */
+        .voice-player { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 10px 15px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; cursor: pointer; transition: all 0.3s; }
+        .voice-player:hover { background: rgba(212, 175, 55, 0.1); }
+        .voice-player .icon { color: var(--gold); font-size: 20px; margin: 0; }
+        .voice-player .text { font-size: 12px; color: var(--text-color); font-weight: 700; }
+        .voice-wave { display: flex; gap: 2px; align-items: center; height: 15px; }
+        .voice-wave span { width: 3px; height: 100%; background: var(--gold); border-radius: 2px; animation: wave 1.2s infinite ease-in-out; }
+        .voice-wave span:nth-child(2) { animation-delay: 0.2s; }
+        .voice-wave span:nth-child(3) { animation-delay: 0.4s; }
+        .voice-wave span:nth-child(4) { animation-delay: 0.6s; }
+        @keyframes wave { 0%, 100% { height: 5px; opacity: 0.5; } 50% { height: 15px; opacity: 1; } }
 
         .custom-logo { width: 90px; height: 90px; margin: 0 auto 10px auto; display: block; filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5)); }
         
@@ -79,7 +94,6 @@
         .phone-etisalat { background: linear-gradient(135deg, #007bff, #00c6ff); box-shadow: 0 4px 10px rgba(0, 198, 255, 0.2); }
         .phone-utoma { background: linear-gradient(135deg, #f09433, #e6683c); box-shadow: 0 4px 10px rgba(240, 148, 51, 0.2); }
         
-        /* دکمه کارت بانکی */
         .bank-btn { background: linear-gradient(135deg, rgba(212, 175, 55, 0.9), rgba(180, 140, 40, 0.9)); color: #111; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3); }
         .bank-btn .icon { color: #111; }
 
@@ -100,7 +114,7 @@
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(50px); background: #333; color: #fff; padding: 10px 20px; border-radius: 30px; font-size: 13px; opacity: 0; transition: all 0.3s; z-index: 1000; border: 1px solid var(--gold); pointer-events: none; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-        /* --- استایل مودال (پنجره پرداخت) --- */
+        /* مودال پرداخت */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 2000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
         .modal-overlay.active { display: flex; opacity: 1; }
         
@@ -120,58 +134,49 @@
         .card-details.active { display: block; }
         
         .card-name { font-size: 14px; font-weight: 700; color: var(--gold); margin-bottom: 5px; }
-        .card-number { font-size: 16px; font-weight: 900; letter-spacing: 2px; margin-bottom: 10px; font-family: monospace; }
+        .card-owner { font-size: 12px; color: #aaa; margin-bottom: 10px; }
+        body.light-mode .card-owner { color: #555; }
+        .card-number { font-size: 18px; font-weight: 900; letter-spacing: 2px; margin-bottom: 10px; font-family: monospace; direction: ltr; }
         .copy-card-btn { background: var(--gold); color: #111; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: 'Vazirmatn', Tahoma, sans-serif; font-size: 13px; transition: all 0.3s; }
         .copy-card-btn:hover { background: #b8860b; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
     </style>
 </head>
 <body>
 
 <div class="toast" id="toast">کپی شد!</div>
 
-<!-- پنجره مودال پرداخت -->
 <div class="modal-overlay" id="paymentModal">
     <div class="modal-content">
         <button class="close-modal" onclick="closeModal()">✕</button>
         <div class="modal-title">💳 کارت‌های بانکی و پرداخت</div>
         
-        <!-- دکمه‌های انتخاب بانک -->
         <div class="bank-options">
-            <button class="bank-opt-btn" onclick="showCard('azizi')">عزیزی بانک</button>
-            <button class="bank-opt-btn" onclick="showCard('hesab')">حساب پی</button>
-            <button class="bank-opt-btn" onclick="showCard('momo')">حساب مومو</button>
-            <button class="bank-opt-btn" onclick="showCard('master')">مسترکارت</button>
+            <button class="bank-opt-btn" onclick="showCard('azizi', this)">عزیزی بانک (مسترکارت)</button>
+            <button class="bank-opt-btn" onclick="showCard('hesab', this)">حساب پی</button>
+            <button class="bank-opt-btn" onclick="showCard('momo', this)">حساب مومو</button>
         </div>
 
-        <!-- نمایش جزئیات کارت عزیزی -->
         <div class="card-details" id="card-azizi">
-            <div class="card-name">عزیزی بانک</div>
-            <div class="card-number" id="azizi-num">1234 5678 9012 3456</div>
-            <button class="copy-card-btn" onclick="copyText('1234567890123456')">📋 کپی شماره کارت</button>
+            <div class="card-name">عزیزی بانک (MasterCard)</div>
+            <div class="card-owner">به نام: پرویز تیموری</div>
+            <div class="card-number" id="azizi-num">5512 7000 5385 0306</div>
+            <button class="copy-card-btn" onclick="copyText('5512700053850306')">📋 کپی شماره کارت</button>
         </div>
 
-        <!-- نمایش جزئیات حساب پی -->
         <div class="card-details" id="card-hesab">
-            <div class="card-name">حساب پی</div>
-            <div class="card-number" id="hesab-num">93799000209</div>
-            <button class="copy-card-btn" onclick="copyText('93799000209')">📋 کپی شماره حساب</button>
+            <div class="card-name">حساب پی (Hesab Pay)</div>
+            <div class="card-owner">به نام: پرویز تیموری</div>
+            <div class="card-number" id="hesab-num">0796936833</div>
+            <button class="copy-card-btn" onclick="copyText('0796936833')">📋 کپی شماره حساب</button>
         </div>
 
-        <!-- نمایش جزئیات مومو -->
         <div class="card-details" id="card-momo">
-            <div class="card-name">حساب مومو</div>
+            <div class="card-name">حساب مومو (Momo)</div>
+            <div class="card-owner">به نام: پرویز تیموری</div>
             <div class="card-number" id="momo-num">0771091599</div>
             <button class="copy-card-btn" onclick="copyText('0771091599')">📋 کپی شماره حساب</button>
-        </div>
-
-        <!-- نمایش جزئیات مسترکارت -->
-        <div class="card-details" id="card-master">
-            <div class="card-name">مسترکارت (MasterCard)</div>
-            <div class="card-number" id="master-num">5555 4444 3333 2222</div>
-            <button class="copy-card-btn" onclick="copyText('5555444433332222')">📋 کپی شماره کارت</button>
         </div>
     </div>
 </div>
@@ -182,7 +187,22 @@
         <button class="top-btn" onclick="sharePage()" title="اشتراک‌گذاری سایت">🔗</button>
     </div>
 
-    <div class="live-clock" id="liveClock">🕒 در حال بارگذاری...</div>
+    <!-- وضعیت آنلاین و ساعت -->
+    <div class="status-bar">
+        <div style="display: flex; align-items: center; gap: 5px;"><span class="status-dot"></span> آنلاین</div>
+        <div id="liveClock">🕒 در حال بارگذاری...</div>
+    </div>
+
+    <!-- دکمه پخش صدای هوش مصنوعی -->
+    <div class="voice-player" onclick="playAI()">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="icon">🔊</span>
+            <span class="text">پیام صوتی خوش‌آمدگویی</span>
+        </div>
+        <div class="voice-wave">
+            <span></span><span></span><span></span><span></span>
+        </div>
+    </div>
 
     <svg class="custom-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <circle cx="50" cy="50" r="45" fill="var(--box-bg)" stroke="var(--gold)" stroke-width="2"/>
@@ -221,7 +241,6 @@
         <span class="icon">📞</span>
     </div>
 
-    <!-- دکمه کارت‌های بانکی -->
     <div class="contact-btn bank-btn" onclick="openModal()">
         <div class="btn-text">
             <strong>کارت‌های بانکی و پرداخت</strong>
@@ -259,10 +278,24 @@
         const options = { timeZone: 'Asia/Kabul', hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true };
         let timeString = now.toLocaleTimeString('fa-IR', options);
         timeString = timeString.replace('AM', 'ق.ظ').replace('PM', 'ب.ظ');
-        document.getElementById('liveClock').innerText = '🕒 ساعت هرات: ' + timeString;
+        document.getElementById('liveClock').innerText = timeString;
     }
     setInterval(updateClock, 1000);
     updateClock();
+
+    // پخش صدای هوش مصنوعی
+    function playAI() {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel(); // لغو صداهای قبلی
+            const utterance = new SpeechSynthesisUtterance('سلام، من پرویز تیموری هستم. به سایت شخصی من خوش آمدید. برای هرگونه همکاری و مشاوره در خدمت شما هستم.');
+            utterance.lang = 'fa-IR';
+            utterance.rate = 0.9; // سرعت گفتار
+            utterance.pitch = 1.1; // تن صدا
+            window.speechSynthesis.speak(utterance);
+        } else {
+            showToast('مرورگر شما از پخش صدا پشتیبانی نمی‌کند.');
+        }
+    }
 
     // تغییر تم
     function toggleTheme() {
@@ -280,7 +313,7 @@
         }
     }
 
-    // کپی کردن متن
+    // کپی کردن
     function copyNumber(number, customMessage = 'شماره کپی شد!') {
         navigator.clipboard.writeText(number).then(() => {
             showToast(customMessage);
@@ -289,7 +322,7 @@
 
     function copyText(text) {
         navigator.clipboard.writeText(text).then(() => {
-            showToast('شماره کارت کپی شد!');
+            showToast('شماره حساب/کارت کپی شد!');
         });
     }
 
@@ -300,10 +333,9 @@
         setTimeout(() => { toast.classList.remove('show'); }, 2000);
     }
 
-    // --- منطق مودال کارت بانکی ---
+    // مودال پرداخت
     function openModal() {
         document.getElementById('paymentModal').classList.add('active');
-        // بستن تمام کارت‌های قبلی و ریست کردن دکمه‌ها
         document.querySelectorAll('.card-details').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.bank-opt-btn').forEach(el => el.classList.remove('active'));
     }
@@ -312,22 +344,16 @@
         document.getElementById('paymentModal').classList.remove('active');
     }
 
-    function showCard(type) {
-        // مخفی کردن همه کارت‌ها
+    function showCard(type, btnElement) {
         document.querySelectorAll('.card-details').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.bank-opt-btn').forEach(el => el.classList.remove('active'));
 
-        // نمایش کارت انتخاب شده
         document.getElementById('card-' + type).classList.add('active');
-        // فعال کردن دکمه انتخاب شده
-        event.target.classList.add('active');
+        if(btnElement) { btnElement.classList.add('active'); }
     }
 
-    // بستن مودال با کلیک در بیرون از آن
     document.getElementById('paymentModal').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeModal();
-        }
+        if (e.target === this) { closeModal(); }
     });
 </script>
 
