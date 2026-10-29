@@ -8,13 +8,32 @@
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
+        :root {
+            --bg-color: #030303;
+            --text-color: #ffffff;
+            --box-bg: linear-gradient(145deg, rgba(25, 25, 25, 0.95), rgba(10, 10, 10, 0.98));
+            --border-color: rgba(212, 175, 55, 0.3);
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+            --gold: #d4af37;
+            --card-bg: rgba(255, 255, 255, 0.03);
+        }
+
+        body.light-mode {
+            --bg-color: #f0f2f5;
+            --text-color: #111;
+            --box-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 240, 0.98));
+            --border-color: rgba(212, 175, 55, 0.6);
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --card-bg: rgba(0, 0, 0, 0.03);
+        }
+        
         body {
             font-family: 'Vazirmatn', Tahoma, sans-serif;
-            background-color: #030303;
+            background-color: var(--bg-color);
             background-image: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.05), transparent 25%);
             display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; color: white; overflow-x: hidden; 
-            padding-bottom: 30px; position: relative;
+            min-height: 100vh; color: var(--text-color); overflow-x: hidden; 
+            padding: 20px 0; position: relative; transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         body::before {
@@ -26,134 +45,291 @@
 
         .container {
             text-align: center; width: 92%; max-width: 420px;
-            background: linear-gradient(145deg, rgba(25, 25, 25, 0.9), rgba(10, 10, 10, 0.95));
-            padding: 35px 20px; border-radius: 24px; border: 1px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 30px rgba(212, 175, 55, 0.1);
-            backdrop-filter: blur(20px); position: relative; overflow: hidden; margin: 20px 0;
+            background: var(--box-bg);
+            padding: 30px 20px; border-radius: 24px; border: 1px solid var(--border-color);
+            box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 30px rgba(212, 175, 55, 0.1);
+            backdrop-filter: blur(20px); position: relative; overflow: hidden;
+            transition: all 0.5s ease; z-index: 10;
         }
-        .container::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, #d4af37, transparent); }
-        
-        /* لوگوی اختصاصی شخصی (حرف P و T) */
+        .container::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+
+        .top-buttons { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        .top-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--gold); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; transition: all 0.3s; }
+        .top-btn:hover { background: var(--gold); color: #111; }
+
+        .live-clock { color: var(--gold); font-size: 12px; font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+
         .custom-logo { width: 90px; height: 90px; margin: 0 auto 10px auto; display: block; filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5)); }
         
-        .brand-name { color: #d4af37; font-size: 26px; font-weight: 900; margin-bottom: 3px; text-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
-        .brand-name-en { color: #fff; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7; }
-        .location { color: #aaa; font-size: 13px; margin-bottom: 25px; font-weight: 400; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .brand-name { color: var(--gold); font-size: 26px; font-weight: 900; margin-bottom: 3px; text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+        .brand-name-en { color: var(--text-color); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7; }
+        .location { color: #888; font-size: 13px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        body.light-mode .location { color: #555; }
 
-        /* استایل دکمه‌ها */
-        .btn { 
-            display: flex; align-items: center; justify-content: space-between; 
-            width: 100%; padding: 12px 20px; margin: 10px 0; 
-            border-radius: 12px; font-size: 15px; font-weight: 700; 
-            color: white; text-decoration: none; transition: all 0.3s ease; 
-            border: 1px solid rgba(255, 255, 255, 0.1); position: relative; overflow: hidden; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .btn::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: all 0.5s ease; }
-        .btn:hover::after { left: 100%; }
-        .btn:active { transform: scale(0.96); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
-        .icon { font-size: 20px; margin-left: 15px; }
-        
-        /* رنگ دکمه‌های تماس */
-        .phone-roshan { background: linear-gradient(135deg, #11998e, #38ef7d); box-shadow: 0 4px 15px rgba(56, 239, 125, 0.2); }
-        .phone-etisalat { background: linear-gradient(135deg, #007bff, #00c6ff); box-shadow: 0 4px 15px rgba(0, 198, 255, 0.2); }
-        .phone-utoma { background: linear-gradient(135deg, #f09433, #e6683c); box-shadow: 0 4px 15px rgba(240, 148, 51, 0.2); }
+        .bio-card { background: var(--card-bg); border: 1px dashed var(--border-color); border-radius: 12px; padding: 12px; font-size: 12px; color: #aaa; line-height: 1.6; margin-bottom: 20px; }
+        body.light-mode .bio-card { color: #444; }
 
-        /* رنگ دکمه‌های شبکه‌های اجتماعی */
-        .whatsapp { background: linear-gradient(135deg, #128C7E, #25D366); box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2); }
-        .telegram { background: linear-gradient(135deg, #0088cc, #00c6ff); box-shadow: 0 4px 15px rgba(0, 198, 255, 0.2); }
-        .instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); box-shadow: 0 4px 15px rgba(220, 39, 67, 0.2); }
-        .imo { background: linear-gradient(135deg, #0078FF, #00B2FF); box-shadow: 0 4px 15px rgba(0, 120, 255, 0.2); }
-
-        /* متن مشخصات شماره روی دکمه */
+        .contact-btn { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 15px; margin: 8px 0; border-radius: 12px; font-size: 14px; font-weight: 700; color: white; text-decoration: none; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.1); position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; }
+        .contact-btn:active { transform: scale(0.96); }
+        .icon { font-size: 18px; margin-left: 10px; }
         .btn-text { display: flex; flex-direction: column; align-items: flex-start; }
         .btn-text span { font-size: 11px; font-weight: 400; opacity: 0.8; margin-top: 2px; letter-spacing: 1px;}
 
-        .divider { width: 100%; height: 1px; background: rgba(212, 175, 55, 0.2); margin: 20px 0; }
+        .phone-roshan { background: linear-gradient(135deg, #11998e, #38ef7d); box-shadow: 0 4px 10px rgba(56, 239, 125, 0.2); }
+        .phone-etisalat { background: linear-gradient(135deg, #007bff, #00c6ff); box-shadow: 0 4px 10px rgba(0, 198, 255, 0.2); }
+        .phone-utoma { background: linear-gradient(135deg, #f09433, #e6683c); box-shadow: 0 4px 10px rgba(240, 148, 51, 0.2); }
+        
+        /* دکمه کارت بانکی */
+        .bank-btn { background: linear-gradient(135deg, rgba(212, 175, 55, 0.9), rgba(180, 140, 40, 0.9)); color: #111; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3); }
+        .bank-btn .icon { color: #111; }
 
-        .footer-text { margin-top: 10px; font-size: 12px; color: #888; line-height: 1.6; font-style: italic; }
+        .divider { width: 100%; height: 1px; background: var(--border-color); margin: 15px 0; opacity: 0.5; }
+
+        .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .social-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 700; color: white; text-decoration: none; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .social-btn:active { transform: scale(0.95); }
+        .social-btn .icon { margin: 0 0 5px 0; font-size: 22px; }
+        
+        .whatsapp { background: linear-gradient(135deg, #128C7E, #25D366); }
+        .telegram { background: linear-gradient(135deg, #0088cc, #00c6ff); }
+        .instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+        .imo { background: linear-gradient(135deg, #0078FF, #00B2FF); }
+
+        .footer-text { margin-top: 20px; font-size: 11px; color: #666; line-height: 1.5; font-style: italic; }
+
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(50px); background: #333; color: #fff; padding: 10px 20px; border-radius: 30px; font-size: 13px; opacity: 0; transition: all 0.3s; z-index: 1000; border: 1px solid var(--gold); pointer-events: none; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        /* --- استایل مودال (پنجره پرداخت) --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 2000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        
+        .modal-content { background: var(--box-bg); border: 1px solid var(--border-color); width: 90%; max-width: 380px; border-radius: 20px; padding: 25px 20px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: translateY(20px); transition: transform 0.3s ease; }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        
+        .close-modal { position: absolute; top: 15px; left: 15px; background: var(--card-bg); border: 1px solid var(--border-color); color: var(--gold); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
+        
+        .modal-title { color: var(--gold); font-size: 18px; font-weight: 900; margin-bottom: 20px; text-align: center; }
+        
+        .bank-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .bank-opt-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 10px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.3s; font-family: 'Vazirmatn', Tahoma, sans-serif; }
+        .bank-opt-btn:hover, .bank-opt-btn.active { background: var(--gold); color: #111; border-color: var(--gold); }
+        
+        .card-details { background: rgba(0,0,0,0.2); border: 1px dashed var(--border-color); border-radius: 12px; padding: 15px; text-align: center; display: none; animation: fadeIn 0.4s ease; }
+        body.light-mode .card-details { background: rgba(255,255,255,0.5); }
+        .card-details.active { display: block; }
+        
+        .card-name { font-size: 14px; font-weight: 700; color: var(--gold); margin-bottom: 5px; }
+        .card-number { font-size: 16px; font-weight: 900; letter-spacing: 2px; margin-bottom: 10px; font-family: monospace; }
+        .copy-card-btn { background: var(--gold); color: #111; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: 'Vazirmatn', Tahoma, sans-serif; font-size: 13px; transition: all 0.3s; }
+        .copy-card-btn:hover { background: #b8860b; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     </style>
 </head>
 <body>
 
+<div class="toast" id="toast">کپی شد!</div>
+
+<!-- پنجره مودال پرداخت -->
+<div class="modal-overlay" id="paymentModal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeModal()">✕</button>
+        <div class="modal-title">💳 کارت‌های بانکی و پرداخت</div>
+        
+        <!-- دکمه‌های انتخاب بانک -->
+        <div class="bank-options">
+            <button class="bank-opt-btn" onclick="showCard('azizi')">عزیزی بانک</button>
+            <button class="bank-opt-btn" onclick="showCard('hesab')">حساب پی</button>
+            <button class="bank-opt-btn" onclick="showCard('momo')">حساب مومو</button>
+            <button class="bank-opt-btn" onclick="showCard('master')">مسترکارت</button>
+        </div>
+
+        <!-- نمایش جزئیات کارت عزیزی -->
+        <div class="card-details" id="card-azizi">
+            <div class="card-name">عزیزی بانک</div>
+            <div class="card-number" id="azizi-num">1234 5678 9012 3456</div>
+            <button class="copy-card-btn" onclick="copyText('1234567890123456')">📋 کپی شماره کارت</button>
+        </div>
+
+        <!-- نمایش جزئیات حساب پی -->
+        <div class="card-details" id="card-hesab">
+            <div class="card-name">حساب پی</div>
+            <div class="card-number" id="hesab-num">93799000209</div>
+            <button class="copy-card-btn" onclick="copyText('93799000209')">📋 کپی شماره حساب</button>
+        </div>
+
+        <!-- نمایش جزئیات مومو -->
+        <div class="card-details" id="card-momo">
+            <div class="card-name">حساب مومو</div>
+            <div class="card-number" id="momo-num">0771091599</div>
+            <button class="copy-card-btn" onclick="copyText('0771091599')">📋 کپی شماره حساب</button>
+        </div>
+
+        <!-- نمایش جزئیات مسترکارت -->
+        <div class="card-details" id="card-master">
+            <div class="card-name">مسترکارت (MasterCard)</div>
+            <div class="card-number" id="master-num">5555 4444 3333 2222</div>
+            <button class="copy-card-btn" onclick="copyText('5555444433332222')">📋 کپی شماره کارت</button>
+        </div>
+    </div>
+</div>
+
 <div class="container">
-    <!-- لوگوی شخصی (P T) -->
+    <div class="top-buttons">
+        <button class="top-btn" onclick="toggleTheme()" title="تغییر حالت شب و روز">🌙</button>
+        <button class="top-btn" onclick="sharePage()" title="اشتراک‌گذاری سایت">🔗</button>
+    </div>
+
+    <div class="live-clock" id="liveClock">🕒 در حال بارگذاری...</div>
+
     <svg class="custom-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="50" cy="50" r="45" fill="#111" stroke="#d4af37" stroke-width="2"/>
-        <text x="50" y="65" font-family="Tahoma, sans-serif" font-size="40" font-weight="bold" fill="#d4af37" text-anchor="middle">PT</text>
+        <circle cx="50" cy="50" r="45" fill="var(--box-bg)" stroke="var(--gold)" stroke-width="2"/>
+        <text x="50" y="65" font-family="Tahoma, sans-serif" font-size="40" font-weight="bold" fill="var(--gold)" text-anchor="middle">PT</text>
     </svg>
 
     <h1 class="brand-name">پرویز تیموری</h1>
     <h2 class="brand-name-en">Parwiz Temori</h2>
     <p class="location">📍 ولایت هرات، افغانستان</p>
     
-    <div class="divider"></div>
+    <div class="bio-card">
+        به سایت شخصی من خوش آمدید! برای هرگونه همکاری، مشاوره یا ارتباط مستقیم، می‌توانید از راه‌های زیر با من در تماس باشید.
+    </div>
 
-    <!-- دکمه‌های تماس -->
-    <a href="tel:+93796936833" class="btn phone-roshan">
+    <div class="contact-btn phone-roshan" onclick="copyNumber('0796936833')">
         <div class="btn-text">
             <strong>تماس با شماره روشن</strong>
             <span>0796936833</span>
         </div>
         <span class="icon">📞</span>
-    </a>
+    </div>
 
-    <a href="tel:+93782780428" class="btn phone-etisalat">
+    <div class="contact-btn phone-etisalat" onclick="copyNumber('0782780428')">
         <div class="btn-text">
             <strong>تماس با شماره اتصالات</strong>
             <span>0782780428</span>
         </div>
         <span class="icon">📞</span>
-    </a>
+    </div>
 
-    <a href="tel:+93771091599" class="btn phone-utoma">
+    <div class="contact-btn phone-utoma" onclick="copyNumber('0771091599')">
         <div class="btn-text">
             <strong>تماس با شماره اوتوما</strong>
             <span>0771091599</span>
         </div>
         <span class="icon">📞</span>
-    </a>
+    </div>
+
+    <!-- دکمه کارت‌های بانکی -->
+    <div class="contact-btn bank-btn" onclick="openModal()">
+        <div class="btn-text">
+            <strong>کارت‌های بانکی و پرداخت</strong>
+            <span>جهت واریز وجه یا حمایت</span>
+        </div>
+        <span class="icon">💳</span>
+    </div>
 
     <div class="divider"></div>
 
-    <!-- دکمه‌های شبکه‌های اجتماعی -->
-    <a href="https://wa.me/93771091599?text=سلام پرویز جان، از سایتت مزاحم شدم." class="btn whatsapp" target="_blank">
-        <div class="btn-text">
-            <strong>واتساپ (WhatsApp)</strong>
-            <span>0771091599</span>
-        </div>
-        <span class="icon">💬</span>
-    </a>
-
-    <a href="https://t.me/Khan_temori_1" class="btn telegram" target="_blank">
-        <div class="btn-text">
-            <strong>تلگرام (Telegram)</strong>
-            <span>@Khan_temori_1</span>
-        </div>
-        <span class="icon">✈️</span>
-    </a>
-
-    <a href="https://instagram.com/parwiz_temori" class="btn instagram" target="_blank">
-        <div class="btn-text">
-            <strong>اینستاگرام (Instagram)</strong>
-            <span>@parwiz_temori</span>
-        </div>
-        <span class="icon">📸</span>
-    </a>
-
-    <a href="https://imo.im" class="btn imo" target="_blank">
-        <div class="btn-text">
-            <strong>ایمو (IMO)</strong>
-            <span>0796936833</span>
-        </div>
-        <span class="icon">💠</span>
-    </a>
+    <div class="social-grid">
+        <a href="https://wa.me/93771091599?text=سلام پرویز جان، از سایتت مزاحم شدم." class="social-btn whatsapp" target="_blank">
+            <span class="icon">💬</span> واتساپ
+        </a>
+        <a href="https://t.me/Khan_temori_1" class="social-btn telegram" target="_blank">
+            <span class="icon">✈️</span> تلگرام
+        </a>
+        <a href="https://instagram.com/parwiz_temori" class="social-btn instagram" target="_blank">
+            <span class="icon">📸</span> اینستاگرام
+        </a>
+        <a href="https://imo.im" class="social-btn imo" target="_blank">
+            <span class="icon">💠</span> ایمو
+        </a>
+    </div>
     
     <p class="footer-text">
-        برای ارتباط با من می‌توانید از راه‌های ارتباطی بالا استفاده کنید.
+        طراحی شده با ❤️ برای پرویز تیموری
     </p>
 </div>
+
+<script>
+    // ساعت ۱۲ ساعته
+    function updateClock() {
+        const now = new Date();
+        const options = { timeZone: 'Asia/Kabul', hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true };
+        let timeString = now.toLocaleTimeString('fa-IR', options);
+        timeString = timeString.replace('AM', 'ق.ظ').replace('PM', 'ب.ظ');
+        document.getElementById('liveClock').innerText = '🕒 ساعت هرات: ' + timeString;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // تغییر تم
+    function toggleTheme() {
+        document.body.classList.toggle('light-mode');
+        const btn = document.querySelector('.top-btn');
+        btn.innerText = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+    }
+
+    // اشتراک‌گذاری
+    function sharePage() {
+        if (navigator.share) {
+            navigator.share({ title: 'پرویز تیموری', url: window.location.href }).catch(console.error);
+        } else {
+            copyNumber(window.location.href, 'لینک سایت کپی شد!');
+        }
+    }
+
+    // کپی کردن متن
+    function copyNumber(number, customMessage = 'شماره کپی شد!') {
+        navigator.clipboard.writeText(number).then(() => {
+            showToast(customMessage);
+        });
+    }
+
+    function copyText(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('شماره کارت کپی شد!');
+        });
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 2000);
+    }
+
+    // --- منطق مودال کارت بانکی ---
+    function openModal() {
+        document.getElementById('paymentModal').classList.add('active');
+        // بستن تمام کارت‌های قبلی و ریست کردن دکمه‌ها
+        document.querySelectorAll('.card-details').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.bank-opt-btn').forEach(el => el.classList.remove('active'));
+    }
+
+    function closeModal() {
+        document.getElementById('paymentModal').classList.remove('active');
+    }
+
+    function showCard(type) {
+        // مخفی کردن همه کارت‌ها
+        document.querySelectorAll('.card-details').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.bank-opt-btn').forEach(el => el.classList.remove('active'));
+
+        // نمایش کارت انتخاب شده
+        document.getElementById('card-' + type).classList.add('active');
+        // فعال کردن دکمه انتخاب شده
+        event.target.classList.add('active');
+    }
+
+    // بستن مودال با کلیک در بیرون از آن
+    document.getElementById('paymentModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
+</script>
 
 </body>
 </html>
